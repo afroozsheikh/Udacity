@@ -49,7 +49,8 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
-poi  = "poi"
+feature_3 = "total_payments"
+poi = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
@@ -64,13 +65,12 @@ for f1, f2 in finance_features:
 plt.show()
 
 
-
 from sklearn.cluster import KMeans
-features_list = ["poi", feature_1, feature_2]
+features_list = ["poi", feature_1, feature_2, feature_3]
 data2 = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data2 )
 clf = KMeans(n_clusters=2)
-pred = clf.fit_predict( finance_features )
+pred = clf.fit_predict(finance_features )
 Draw(pred, finance_features, poi, name="clusters_before_scaling.pdf", f1_name=feature_1, f2_name=feature_2)
 
 
@@ -82,7 +82,12 @@ try:
 except NameError:
     print("no predictions object named pred found, no clusters to plot")
 
+list_min = []
+for i in data_dict.keys():
+    if data_dict[i]['salary'] != 'NaN':
+        list_min.append(data_dict[i]['salary'])
 
-
-
+list_min.sort()
+print(list_min[0])
+print(list_min[-1])
 
